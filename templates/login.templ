@@ -13,7 +13,7 @@ templ Login(){
         </head>
         @Logo()
         <div class="title">Login</div>
-        <form class="form" hx-post="/validate-login/" hx-target="#login" hx-swap="outerHTML" hx-indicator="#spinner">
+        <form class="form" hx-post="/validate-login" hx-target="#login" hx-swap="outerHTML" hx-indicator="#spinner">
             @NormalLogin()
             <button type="submit" class="btn btn-primary">
                 <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>

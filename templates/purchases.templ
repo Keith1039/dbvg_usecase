@@ -1,0 +1,34 @@
+package templates
+
+import "strconv"
+import "github.com/Keith1039/dbvg_usecase/structs"
+
+templ Purchases(username string, productName string, purchases []*structs.Purchase){
+    if username != "" {
+        <div class="sub-title"> Purchases made by user: {username}</div>
+    } else if productName != ""{
+        <div class="sub-title"> Purchases for product: {productName}</div>
+    } else {
+        <div class="sub-title"> Purchases</div>
+    }
+    <div class="table-container">
+        <table>
+            <tr>
+                <th style="width: 10%">Row Number</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+            for i, purchase := range purchases{
+                <tr>
+                    <td style="width: 10%">{strconv.Itoa(i)}</td>
+                    <td>{purchase.Username}</td>
+                    <td>{purchase.ItemName}</td>
+                    <td>{purchase.ItemDesc}</td>
+                    <td>{strconv.FormatFloat(purchase.ItemPrice, 'f', -1, 64)}</td>
+                </tr>
+            }
+        </table>
+    </div>
+}

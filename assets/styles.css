@@ -19,14 +19,16 @@
     justify-content: center;
     align-items: center;
 }
-table th, td{
-    border: 1px solid;
-    display: inline-block;
+
+th, td{
+    border: 1px solid black;
     padding: 40px;
-    justify-content: center;
-    align-items: center;
     font-size: 25px;
     text-align: center;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
 }
 
 header {

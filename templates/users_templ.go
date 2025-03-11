@@ -34,7 +34,7 @@ func Users(users []*structs.User) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"sub-title\">Users</div><div class=\"table-container\"><table><tr><th>Row Number</th><th>Username </th><th>Password</th><th>Purchases</th></tr>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"sub-title\">Users</div><div class=\"table-container\"><table><tr><th>Row Number</th><th>Username</th><th>Password</th><th>Purchases</th></tr>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

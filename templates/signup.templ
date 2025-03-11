@@ -13,7 +13,7 @@ templ Signup(){
         </head>
         @Logo()
         <div class="title"> Sign Up</div>
-        <form class="form" hx-post="/validate-signup/" hx-target="#username" hx-swap="outerHTML" hx-indicator="#spinner">
+        <form class="form" hx-post="/validate-signup" hx-target="#username" hx-swap="outerHTML" hx-indicator="#spinner">
             <div id="signup">
                 @Username()
                 <div class="mb-3">

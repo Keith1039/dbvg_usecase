@@ -10,15 +10,16 @@ templ Products(products []*structs.Product){
     <div class="table-container">
         <table>
             <tr>
-                <th>Row Number</th>
+                <th style="width: 10%">Row Number</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Purchases</th>
             </tr>
             for i, product := range products {
                 {{id := fmt.Sprintf("%x-%x-%x-%x-%x", product.ID.Bytes[0:4], product.ID.Bytes[4:6], product.ID.Bytes[6:8], product.ID.Bytes[8:10], product.ID.Bytes[10:16])}}
                 <tr>
-                    <td>{strconv.Itoa(i)}</td>
+                    <td style="width: 10%">{strconv.Itoa(i)}</td>
                     <td>{product.Name}</td>
                     <td>{product.Description}</td>
                     <td>{strconv.FormatFloat(product.Price, 'f', -1, 64)}</td>

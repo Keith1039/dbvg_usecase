@@ -7,6 +7,7 @@ import (
 	"github.com/Keith1039/dbvg_usecase/templates"
 	"github.com/a-h/templ"
 	"github.com/georgysavva/scany/v2/pgxscan"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"log"
 	"net/http"
@@ -41,10 +42,11 @@ func main() {
 	http.Handle("/login", templ.Handler(templates.Login()))
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
-	http.HandleFunc("/validate-login/", HandleLogin)
-	http.HandleFunc("/validate-signup/", HandleSignup)
-	http.HandleFunc("/users/", HandleUsers)
-	http.HandleFunc("/products/", HandleProducts)
+	http.HandleFunc("/validate-login", HandleLogin)
+	http.HandleFunc("/validate-signup", HandleSignup)
+	http.HandleFunc("/users", HandleUsers)
+	http.HandleFunc("/products", HandleProducts)
+	http.HandleFunc("/purchases", handlePurchases)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
@@ -114,7 +116,7 @@ func HandleUsers(w http.ResponseWriter, r *http.Request) {
 
 func HandleProducts(w http.ResponseWriter, r *http.Request) {
 	var products []*structs.Product
-	rows, err := dbpool.Query(ctx, "SELECT ID, NAME, DESCRIPTION, PRICE FROM PRODUCT")
+	rows, err := dbpool.Query(ctx, "SELECT ID, NAME, DESCRIPTION, PRICE FROM PRODUCTS")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -127,6 +129,47 @@ func HandleProducts(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	defer rows.Close()
+}
+
+func handlePurchases(w http.ResponseWriter, r *http.Request) {
+	var purchases []*structs.Purchase
+	var rows pgx.Rows
+	var err error
+	var isProduct bool
+	var productName string
+
+	vals := r.URL.Query()
+	username := vals.Get("username")
+	productID := vals.Get("productID")
+	if username != "" {
+		rows, err = dbpool.Query(ctx, "SELECT USERNAME, NAME, DESCRIPTION, PRICE FROM PRODUCTS INNER JOIN PURCHASES ON PURCHASES.PRODUCT_ID=PRODUCTS.ID AND PURCHASES.USERNAME=$1", username)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else if productID != "" {
+		isProduct = true
+		rows, err = dbpool.Query(ctx, "SELECT USERNAME, NAME, DESCRIPTION, PRICE FROM PRODUCTS INNER JOIN PURCHASES ON PURCHASES.PRODUCT_ID=PRODUCTS.ID AND PRODUCTS.ID=$1", productID)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		rows, err = dbpool.Query(ctx, "SELECT USERNAME, NAME, DESCRIPTION, PRICE FROM PRODUCTS INNER JOIN PURCHASES ON PRODUCTS.ID=PURCHASES.PRODUCT_ID")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	err = pgxscan.ScanAll(&purchases, rows)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if isProduct {
+		productName = purchases[0].ItemName
+	}
+	err = Render(w, r, templates.Purchases(username, productName, purchases))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 func hxRedirect(w http.ResponseWriter, r *http.Request, url string) error {
