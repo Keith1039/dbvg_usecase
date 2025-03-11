@@ -1,8 +1,8 @@
 package structs
 
 type Purchase struct {
-	Username  string
-	ItemName  string
-	ItemDesc  string
-	ItemPrice float64
+	Username  string  `db:"username"`
+	ItemName  string  `db:"name"`
+	ItemDesc  string  `db:"description"`
+	ItemPrice float64 `db:"price"`
 }

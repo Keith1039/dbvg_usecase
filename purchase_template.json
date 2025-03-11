@@ -1,0 +1,47 @@
+{
+  "products": {
+    "created_at": {
+      "Code": "",
+      "Type": "DATE",
+      "Value": ""
+    },
+    "description": {
+      "Code": "",
+      "Type": "VARCHAR",
+      "Value": ""
+    },
+    "id": {
+      "Code": "",
+      "Type": "UUID",
+      "Value": ""
+    },
+    "name": {
+      "Code": "",
+      "Type": "VARCHAR",
+      "Value": ""
+    },
+    "price": {
+      "Code": "RANDOM",
+      "Type": "FLOAT",
+      "Value": "20, 100"
+    }
+  },
+  "purchases": {},
+  "users": {
+    "created_at": {
+      "Code": "",
+      "Type": "DATE",
+      "Value": ""
+    },
+    "password": {
+      "Code": "",
+      "Type": "VARCHAR",
+      "Value": ""
+    },
+    "username": {
+      "Code": "FIRSTNAME",
+      "Type": "VARCHAR",
+      "Value": ""
+    }
+  }
+}
