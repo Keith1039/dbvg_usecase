@@ -32,22 +32,27 @@ func init() {
 }
 
 func main() {
+	defer dbpool.Close()
 	http.Handle("/", templ.Handler(templates.Welcome()))
 	http.Handle("/home", templ.Handler(templates.Home(&name)))
 	http.Handle("/signup", templ.Handler(templates.Signup()))
 	http.Handle("/login", templ.Handler(templates.Login()))
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
 	http.HandleFunc("/validate-login/", HandleLogin)
 	http.HandleFunc("/validate-signup/", HandleSignup)
 
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println("listening on port 8080...")
-	http.ListenAndServe(":8080", nil)
 }
 
 func HandleLogin(w http.ResponseWriter, r *http.Request) {
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
-	query := dbpool.QueryRow(ctx, "SELECT USERNAME FROM USER WHERE USERNAME=$1 AND PASSWORD=$2", username, password)
+	query := dbpool.QueryRow(ctx, "SELECT USERNAME FROM USERS WHERE USERNAME=$1 AND PASSWORD=$2", username, password)
 	err := query.Scan(&name)
 	if err != nil { // probably no error row, but I should add the explicit condition
 		component := templates.FailedLogin(username, password)
@@ -64,15 +69,18 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 func HandleSignup(w http.ResponseWriter, r *http.Request) {
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
-	query := dbpool.QueryRow(ctx, "SELECT USERNAME FROM USER WHERE USERNAME=$1")
+	query := dbpool.QueryRow(ctx, "SELECT USERNAME FROM USERS WHERE USERNAME=$1")
 	err := query.Scan(&name)
 	if err != nil { // new username
-		_, err = dbpool.Exec(ctx, "INSERT INTO USER (USERNAME, PASSWORD) VALUES ($1, $2)", username, password)
+		_, err = dbpool.Exec(ctx, "INSERT INTO USERS (USERNAME, PASSWORD) VALUES ($1, $2)", username, password)
 		if err != nil {
 			log.Fatal(err)
 		}
 		name = username
-		hxRedirect(w, r, "/home")
+		err = hxRedirect(w, r, "/home")
+		if err != nil {
+			log.Fatal(err)
+		}
 
 	} else {
 		component := templates.FailedUsername(username)
