@@ -22,7 +22,7 @@ templ Purchases(username string, productName string, purchases []*structs.Purcha
             </tr>
             for i, purchase := range purchases{
                 <tr>
-                    <td style="width: 10%">{strconv.Itoa(i)}</td>
+                    <td style="width: 10%">{strconv.Itoa(i + 1)}</td>
                     <td>{purchase.Username}</td>
                     <td>{purchase.ItemName}</td>
                     <td>{purchase.ItemDesc}</td>

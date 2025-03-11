@@ -7,7 +7,7 @@ import (
 
 templ Users(users []*structs.User){
     <div class="sub-title"> Users</div>
-    <div class="table-container">
+    <div class="table-container" hx-target="#swappable" hx-swap="innerHTML">
         <table>
             <tr>
                 <th>Row Number</th>
@@ -17,7 +17,7 @@ templ Users(users []*structs.User){
             </tr>
             for i, user := range users {
                 <tr>
-                    <td>{strconv.Itoa(i)}</td>
+                    <td>{strconv.Itoa(i + 1)}</td>
                     <td>{user.Username}</td>
                     <td>{user.Password}</td>
                     <td><a hx-post={"/purchases?username=" + user.Username}><button class="btn btn-primary">Purchases</button></a></td>

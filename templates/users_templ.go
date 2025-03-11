@@ -34,7 +34,7 @@ func Users(users []*structs.User) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"sub-title\">Users</div><div class=\"table-container\"><table><tr><th>Row Number</th><th>Username</th><th>Password</th><th>Purchases</th></tr>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"sub-title\">Users</div><div class=\"table-container\" hx-target=\"#swappable\" hx-swap=\"innerHTML\"><table><tr><th>Row Number</th><th>Username</th><th>Password</th><th>Purchases</th></tr>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -44,9 +44,9 @@ func Users(users []*structs.User) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i))
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i + 1))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/users.templ`, Line: 20, Col: 40}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/users.templ`, Line: 20, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {

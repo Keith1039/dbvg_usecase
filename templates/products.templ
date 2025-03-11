@@ -7,7 +7,7 @@ import (
 )
 templ Products(products []*structs.Product){
     <div class="sub-title"> Products</div>
-    <div class="table-container">
+    <div class="table-container" hx-target="#swappable" hx-swap="innerHTML">
         <table>
             <tr>
                 <th style="width: 10%">Row Number</th>
@@ -19,7 +19,7 @@ templ Products(products []*structs.Product){
             for i, product := range products {
                 {{id := fmt.Sprintf("%x-%x-%x-%x-%x", product.ID.Bytes[0:4], product.ID.Bytes[4:6], product.ID.Bytes[6:8], product.ID.Bytes[8:10], product.ID.Bytes[10:16])}}
                 <tr>
-                    <td style="width: 10%">{strconv.Itoa(i)}</td>
+                    <td style="width: 10%">{strconv.Itoa(i + 1)}</td>
                     <td>{product.Name}</td>
                     <td>{product.Description}</td>
                     <td>{strconv.FormatFloat(product.Price, 'f', -1, 64)}</td>
