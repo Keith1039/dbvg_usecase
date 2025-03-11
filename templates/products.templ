@@ -1,0 +1,30 @@
+package templates
+
+import (
+    "strconv"
+    "github.com/Keith1039/dbvg_usecase/structs"
+    "fmt"
+)
+templ Products(products []*structs.Product){
+    <div class="sub-title"> Products</div>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Row Number</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+            for i, product := range products {
+                {{id := fmt.Sprintf("%x-%x-%x-%x-%x", product.ID.Bytes[0:4], product.ID.Bytes[4:6], product.ID.Bytes[6:8], product.ID.Bytes[8:10], product.ID.Bytes[10:16])}}
+                <tr>
+                    <td>{strconv.Itoa(i)}</td>
+                    <td>{product.Name}</td>
+                    <td>{product.Description}</td>
+                    <td>{strconv.FormatFloat(product.Price, 'f', -1, 64)}</td>
+                    <td><a hx-post={"/purchases?id=" + id}><button class="btn btn-primary">Purchases</button></a></td>
+                </tr>
+            }
+        </table>
+    </div>
+}

@@ -1,0 +1,28 @@
+package templates
+
+import (
+    "strconv"
+    "github.com/Keith1039/dbvg_usecase/structs"
+)
+
+templ Users(users []*structs.User){
+    <div class="sub-title"> Users</div>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Row Number</th>
+                <th>Username </th>
+                <th>Password</th>
+                <th>Purchases</th>
+            </tr>
+            for i, user := range users {
+                <tr>
+                    <td>{strconv.Itoa(i)}</td>
+                    <td>{user.Username}</td>
+                    <td>{user.Password}</td>
+                    <td><a hx-post={"/purchases?username=" + user.Username}><button class="btn btn-primary">Purchases</button></a></td>
+                </tr>
+            }
+        </table>
+    </div>
+}

@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/Keith1039/dbvg_usecase/structs"
 	"github.com/Keith1039/dbvg_usecase/templates"
 	"github.com/a-h/templ"
+	"github.com/georgysavva/scany/v2/pgxscan"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"log"
 	"net/http"
@@ -41,6 +43,8 @@ func main() {
 
 	http.HandleFunc("/validate-login/", HandleLogin)
 	http.HandleFunc("/validate-signup/", HandleSignup)
+	http.HandleFunc("/users/", HandleUsers)
+	http.HandleFunc("/products/", HandleProducts)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
@@ -89,6 +93,40 @@ func HandleSignup(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 	}
+}
+
+func HandleUsers(w http.ResponseWriter, r *http.Request) {
+	var users []*structs.User
+	rows, err := dbpool.Query(ctx, "SELECT USERNAME, PASSWORD FROM USERS")
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = pgxscan.ScanAll(&users, rows)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = Render(w, r, templates.Users(users))
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+}
+
+func HandleProducts(w http.ResponseWriter, r *http.Request) {
+	var products []*structs.Product
+	rows, err := dbpool.Query(ctx, "SELECT ID, NAME, DESCRIPTION, PRICE FROM PRODUCT")
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = pgxscan.ScanAll(&products, rows)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = Render(w, r, templates.Products(products))
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
 }
 
 func hxRedirect(w http.ResponseWriter, r *http.Request, url string) error {
