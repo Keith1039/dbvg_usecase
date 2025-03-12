@@ -140,7 +140,7 @@ func handlePurchases(w http.ResponseWriter, r *http.Request) {
 
 	vals := r.URL.Query()
 	username := vals.Get("username")
-	productID := vals.Get("productID")
+	productID := vals.Get("id")
 	if username != "" {
 		rows, err = dbpool.Query(ctx, "SELECT USERNAME, NAME, DESCRIPTION, PRICE FROM PRODUCTS INNER JOIN PURCHASES ON PURCHASES.PRODUCT_ID=PRODUCTS.ID AND PURCHASES.USERNAME=$1", username)
 		if err != nil {

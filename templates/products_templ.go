@@ -35,7 +35,7 @@ func Products(products []*structs.Product) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"sub-title\">Products</div><div class=\"table-container\" hx-target=\"#swappable\" hx-swap=\"innerHTML\"><table><tr><th style=\"width: 10%\">Row Number</th><th>Name</th><th>Description</th><th>Price</th><th>Purchases</th></tr>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"sub-title\">Products</div><div class=\"table-container\" hx-target=\"#swappable\" hx-swap=\"innerHTML\"><table><tr><th>Row Number</th><th>Name</th><th>Description</th><th>Price</th><th>Purchases</th></tr>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -85,9 +85,9 @@ func Products(products []*structs.Product) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatFloat(product.Price, 'f', -1, 64))
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("$%s", strconv.FormatFloat(product.Price, 'f', -1, 64)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/products.templ`, Line: 25, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/products.templ`, Line: 25, Col: 92}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {

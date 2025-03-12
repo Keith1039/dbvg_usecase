@@ -21,13 +21,12 @@
 }
 
 th, td{
-    border: 1px solid black;
     padding: 40px;
     font-size: 25px;
     text-align: center;
 }
 table, th, td {
-    border: 1px solid black;
+    border: 1px solid black !important;
     border-collapse: collapse;
 }
 
