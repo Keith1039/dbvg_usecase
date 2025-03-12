@@ -23,7 +23,7 @@
     "price": {
       "Code": "RANDOM",
       "Type": "FLOAT",
-      "Value": "20, 100"
+      "Value": ""
     }
   },
   "purchases": {},
